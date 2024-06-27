@@ -1,3 +1,6 @@
+    """
+    This module loads dependencies for the `basic` crate examples
+     """
 
 # rename the default name "crate_repositories" in case you import multiple vendored folders.
 load("//basic/3rdparty/crates:defs.bzl", basic_crate_repositories = "crate_repositories")

@@ -1,6 +1,6 @@
-"a rule transitioning an oci_image to multiple platforms"
+"""A rule transitioning an oci_image to multiple platforms."""
 
-def _multiarch_transition(settings, attr):
+def _multiarch_transition(attr):
     return [
         {"//command_line_option:platforms": str(platform)}
         for platform in attr.platforms
@@ -16,6 +16,7 @@ def _impl(ctx):
     return DefaultInfo(files = depset(ctx.files.image))
 
 multi_arch = rule(
+    doc = "Custom multi-arch rule.",
     implementation = _impl,
     attrs = {
         "image": attr.label(cfg = multiarch_transition),

@@ -1,3 +1,5 @@
+"""This module defined custom rules for building OCI containers."""
+
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index")
 load("//:build/transition.bzl", "multi_arch")
@@ -13,6 +15,7 @@ def build_multi_arch_image(
     platforms = [],
     visibility=None
     ):
+    """Custom multi arch container builder. """
 
     # https://codilime.com/blog/bazel-build-system-build-containerized-applications/
     entry_point = "bin"
@@ -48,6 +51,8 @@ def build_multi_arch_image(
     )
 
 def build_image(name, base, srcs, exposed_ports = [], visibility=None):
+    """Custom container builder. """
+
 
     # Build a Bazel Macro
     # https://belov.nz/posts/bazel-rules-macros/
