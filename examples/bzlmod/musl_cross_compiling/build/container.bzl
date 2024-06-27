@@ -15,7 +15,16 @@ def build_multi_arch_image(
     platforms = [],
     visibility=None
     ):
-    """Custom multi arch container builder. """
+    """Custom multi arch container builder.
+
+    Args:
+        name: The name of the resulting OCI multi arch image i.e. "multi_arch_index"
+        base: The name of the base image for the OCI container. Form example: "@scratch",
+        srcs: The binary source target for the OCI image. For example: [":bin"],
+        exposed_ports: Array of ports exposed in the OCI image. For example: exposed_ports = ["3232","8080"],
+        platforms: Array of target platforms. For example: platforms = [ "//:linux_x86_64_musl", "//:linux_arm64_musl"]
+        visibility: Bazel visibility. Default set to None
+    """
 
     # https://codilime.com/blog/bazel-build-system-build-containerized-applications/
     entry_point = "bin"
@@ -51,8 +60,15 @@ def build_multi_arch_image(
     )
 
 def build_image(name, base, srcs, exposed_ports = [], visibility=None):
-    """Custom container builder. """
+    """Custom container builder.
 
+    Args:
+        name: The name of the resulting OCI multi arch image i.e. "multi_arch_index"
+        base: The name of the base image for the OCI container. Form example: "@scratch",
+        srcs: The binary source target for the OCI image. For example: [":bin"],
+        exposed_ports: Array of ports exposed in the OCI image. For example: exposed_ports = ["3232","8080"],
+        visibility: Bazel visibility. Default set to None
+    """
 
     # Build a Bazel Macro
     # https://belov.nz/posts/bazel-rules-macros/
