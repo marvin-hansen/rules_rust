@@ -1,9 +1,9 @@
 """This module defined custom rules for building OCI containers."""
 
-load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_oci//oci:defs.bzl", "oci_image")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
-def build_image(name, base, srcs, exposed_ports = [], visibility=None):
+def build_image(name, base, srcs, exposed_ports = [], visibility = None):
     """Custom container builder.
 
     Args:
@@ -37,9 +37,7 @@ def build_image(name, base, srcs, exposed_ports = [], visibility=None):
         visibility = visibility,
     )
 
-
 def _build_sha265_tag_impl(ctx):
-
     # Both the input and output files are specified by the BUILD file.
     in_file = ctx.file.input
     out_file = ctx.outputs.output
@@ -53,7 +51,6 @@ def _build_sha265_tag_impl(ctx):
         arguments = [in_file.path, out_file.path],
         command = "sed -n 's/.*sha256:\\([[:alnum:]]\\{7\\}\\).*/\\1/p' < \"$1\" > \"$2\"",
     )
-
 
 build_sha265_tag = rule(
     doc = "Extracts a 7 characters long short hash from the image digest.",
@@ -69,7 +66,7 @@ build_sha265_tag = rule(
             doc = "The image digest file. Usually called image.json.sha256",
         ),
         "output": attr.output(
-            doc = "The generated tag file. Usually named _tag.txt"
+            doc = "The generated tag file. Usually named _tag.txt",
         ),
     },
 )
