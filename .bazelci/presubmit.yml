@@ -749,7 +749,7 @@ tasks:
     working_directory: examples/bzlmod/musl_cross_compiling
     build_targets:
       - "//..."
-      - "//musl_scratch:image_index"
+      - "//musl_scratch:multi_arch_images"
   bzlmod_oci_container:
     name: OCI Container with bzlmod
     platform: ubuntu2004

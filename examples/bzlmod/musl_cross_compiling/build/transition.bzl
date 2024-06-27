@@ -1,6 +1,6 @@
 """A rule transitioning an oci_image to multiple platforms."""
 
-def _multiarch_transition(attr):
+def _multiarch_transition(_settings, attr):
     return [
         {"//command_line_option:platforms": str(platform)}
         for platform in attr.platforms
