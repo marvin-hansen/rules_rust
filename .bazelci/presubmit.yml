@@ -758,13 +758,6 @@ tasks:
     build_targets:
       - "//..."
       - "//musl_scratch:multi_arch_images"
-  bzlmod_oci_container:
-    name: OCI Container with bzlmod
-    platform: ubuntu2004
-    working_directory: examples/bzlmod/oci_container
-    build_targets:
-      - "//..."
-      - "//tokio_oci:image"
   bzlmod_override_targets:
     name: Override Targets bzlmod
     platform: ubuntu2004
