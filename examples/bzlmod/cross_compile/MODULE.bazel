@@ -55,7 +55,6 @@ LLVM_VERSIONS = {
     "darwin-x86_64": "15.0.7",
 }
 
-
 # Host LLVM toolchain.
 llvm.toolchain(
     name = "llvm_toolchain",
