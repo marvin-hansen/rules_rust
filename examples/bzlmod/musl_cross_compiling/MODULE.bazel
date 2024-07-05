@@ -109,6 +109,7 @@ toolchains_musl = use_extension("@toolchains_musl//:toolchains_musl.bzl", "toolc
 toolchains_musl.config(
     extra_target_compatible_with = ["@//build/linker:musl"],
 )
+
 register_toolchains("@toolchains_musl//:all")
 
 # Rust toolchain
