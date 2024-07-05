@@ -1,6 +1,8 @@
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push")
+# Aspect rules for testing
+load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_binary")
 
 # OCI Container Rules
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_rust//rust:defs.bzl", "rust_binary")
 
@@ -10,7 +12,17 @@ load("//:build/container.bzl", "build_sha265_tag")
 # Custom platform transition macro
 load("//:build/transition.bzl", "multi_arch")
 
-# Build binary
+filegroup(
+    name = "all",
+    srcs = [
+        ":bin",
+        ":bin_linux_arm64_musl",
+        ":bin_linux_x86_64_musl",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# Build regular Rust binary
 rust_binary(
     name = "bin",
     srcs = glob([
@@ -47,6 +59,84 @@ rust_binary(
         "@crates//:tokio",
         "@crates//:tokio-cron-scheduler",
         "@crates//:warp",
+    ],
+)
+
+# Build a MUSL x86_64 binary
+platform_transition_binary(
+    name = "bin_linux_x86_64_musl",
+    binary = ":bin",
+    target_platform = "//build/platforms:linux_x86_64_musl",
+)
+
+# Test for x86_64 architecture
+sh_test(
+    name = "test_linux_x86_64",
+    srcs = ["test_platform.sh"],
+    args = [
+        "$(rootpath :bin_linux_x86_64_musl)",
+        "x86_64",
+    ],
+    data = [
+        ":bin_linux_x86_64_musl",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+# Test for static compilation
+sh_test(
+    name = "test_linux_x86_64_musl",
+    srcs = ["test_platform.sh"],
+    args = [
+        "$(rootpath :bin_linux_x86_64_musl)",
+        "static",
+    ],
+    data = [
+        ":bin_linux_x86_64_musl",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+# Build a MUSL ARM64 binary
+platform_transition_binary(
+    name = "bin_linux_arm64_musl",
+    binary = ":bin",
+    target_platform = "//build/platforms:linux_arm64_musl",
+)
+
+# Test for ARM architecture
+sh_test(
+    name = "test_linux_arm64",
+    srcs = ["test_platform.sh"],
+    args = [
+        "$(rootpath :bin_linux_arm64_musl)",
+        "aarch64",
+    ],
+    data = [
+        ":bin_linux_arm64_musl",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
+
+# Test for static compilation
+sh_test(
+    name = "test_linux_arm64_musl",
+    srcs = ["test_platform.sh"],
+    args = [
+        "$(rootpath :bin_linux_arm64_musl)",
+        "static",
+    ],
+    data = [
+        ":bin_linux_arm64_musl",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
     ],
 )
 
