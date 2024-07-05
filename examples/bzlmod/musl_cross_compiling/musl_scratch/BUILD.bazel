@@ -71,7 +71,7 @@ platform_transition_binary(
 
 # Test for x86_64 architecture
 sh_test(
-    name = "test_linux_x86_64",
+    name = "test_musl_x86_64",
     srcs = ["test_platform.sh"],
     args = [
         "$(rootpath :bin_linux_x86_64_musl)",
@@ -87,7 +87,7 @@ sh_test(
 
 # Test for static compilation
 sh_test(
-    name = "test_linux_x86_64_musl",
+    name = "test_musl_x86_64_static",
     srcs = ["test_platform.sh"],
     args = [
         "$(rootpath :bin_linux_x86_64_musl)",
@@ -110,7 +110,7 @@ platform_transition_binary(
 
 # Test for ARM architecture
 sh_test(
-    name = "test_linux_arm64",
+    name = "test_musl_arm64",
     srcs = ["test_platform.sh"],
     args = [
         "$(rootpath :bin_linux_arm64_musl)",
@@ -126,7 +126,7 @@ sh_test(
 
 # Test for static compilation
 sh_test(
-    name = "test_linux_arm64_musl",
+    name = "test_musl_arm64_static",
     srcs = ["test_platform.sh"],
     args = [
         "$(rootpath :bin_linux_arm64_musl)",
