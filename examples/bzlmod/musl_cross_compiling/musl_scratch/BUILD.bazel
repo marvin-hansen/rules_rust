@@ -87,11 +87,9 @@ oci_image_index(
 )
 
 # A custom macro that simplifies building multi-arch images.
-# See the "Custom Container Macro" section in the Readme for details.
+# See the "Custom Container Macro" and "Discussion" section in the Readme for details.
 # You would have to delete everything from pkg_tar to oci_image_index
-# to use this macro instead of the manual declaration because you cannot mix.
-# However, read the discussion at the end of the Readme to determine when
-# the macro makes sense and when to use the manual declaration of all build stages.
+# to use this macro instead of the manual declaration because you cannot mix macro with manual declaration.
 #
 # load("//:build/container.bzl", "build_multi_arch_image", "build_sha265_tag")
 # Build musl multi arch container image

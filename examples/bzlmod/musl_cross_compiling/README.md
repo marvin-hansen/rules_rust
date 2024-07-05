@@ -107,13 +107,13 @@ supports linux on both, X86 and ARM. In that case, you have to setup three LLVM 
 2) LLVM for X86
 3) LLVM for ARM (aarch64)
 
-For the host LLVM, you just specify a LLVM version and then register the toolchain as usual. The target LLVM toolchains,
-however, have dependencies on system libraries for the target platform. Therefore, it is required to download a so-
-called sysroot that contains a root file system with all those system libraries for the specific target platform.
-To do so, please add the following to your MODULE.bazel
+For the host LLVM, you just specify a LLVM version and then register the toolchain as usual. 
+The target LLVM toolchains, however, have dependencies on system libraries for the target platform. 
+Therefore, it is required to download a so- called sysroot that contains a root file system 
+with all those system libraries for the specific target platform.
+To download the sysroot files, please add the following to your MODULE.bazel
 
 ```Starlark
-# https://github.com/bazelbuild/bazel/blob/master/tools/build_defs/repo/http.bzl
 http_archive = use_repo_rule("@bazel_tools//:http.bzl", "http_archive")
 
 # Both, cross compilation and MUSL still need a C/C++ toolchain with sysroot.
@@ -125,20 +125,24 @@ filegroup(
 )
 """
 
-# Download sysroot
+# INTEL/AMD64 Sysroot
+# LastModified: 2024-04-26T19:15
 # https://commondatastorage.googleapis.com/chrome-linux-sysroot/
 http_archive(
     name = "org_chromium_sysroot_linux_x64",
     build_file_content = _BUILD_FILE_CONTENT.format(name = "sysroot"),
-    sha256 = "f6b758d880a6df264e2581788741623320d548508f07ffc2ae6a29d0c13d647d",
-    urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/2e7ada854015a4cc60fc812112d261af44213ed0/debian_bullseye_amd64_sysroot.tar.xz"],
+    sha256 = "5df5be9357b425cdd70d92d4697d07e7d55d7a923f037c22dc80a78e85842d2c",
+    urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/4f611ec025be98214164d4bf9fbe8843f58533f7/debian_bullseye_amd64_sysroot.tar.xz"],
 )
 
+# ARM 64 Sysroot
+# LastModified: 2024-04-26T18:33
+# https://commondatastorage.googleapis.com/chrome-linux-sysroot/
 http_archive(
     name = "org_chromium_sysroot_linux_aarch64",
     build_file_content = _BUILD_FILE_CONTENT.format(name = "sysroot"),
-    sha256 = "902d1a40a5fd8c3764a36c8d377af5945a92e3d264c6252855bda4d7ef81d3df",
-    urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/41a6c8dec4c4304d6509e30cbaf9218dffb4438e/debian_bullseye_arm64_sysroot.tar.xz"],
+    sha256 = "d303cf3faf7804c9dd24c9b6b167d0345d41d7fe4bfb7d34add3ab342f6a236c",
+    urls = ["https://commondatastorage.googleapis.com/chrome-linux-sysroot/toolchain/906cc7c6bf47d4bd969a3221fc0602c6b3153caa/debian_bullseye_arm64_sysroot.tar.xz"],
 )
 ```
 
@@ -147,10 +151,13 @@ sysroots, that means you have to configure LLVM next to use these files. As ment
 needs to be configured and to do that, please add the following to your MODULE.bazel
 
 ```Starlark
+# LLVM Versions and platforms
+# https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl
 LLVM_VERSIONS = {
     "": "16.0.0",
+    "darwin-aarch64": "16.0.3", # Apple Silicon M-series Macs 
+    "darwin-x86_64": "15.0.7",  # Intel Macs
 }
-
 # Host LLVM toolchain.
 llvm.toolchain(
     name = "llvm_toolchain",
@@ -189,11 +196,20 @@ use_repo(llvm, "llvm_toolchain_aarch64_with_sysroot")
 register_toolchains("@llvm_toolchain//:all")
 ```
 
-For simplicity, all toolchains are pinned to version LLVM 16 because it is one of the few releases that supports the
-host (apple-darwin / Ubuntu), and the two targets. For a
-complete [list off all LLVM releases and supported platforms, see this list.](https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl)
-It is possible to pin different targets to different LLVM
-versions; [see the documentation for details](https://github.com/bazel-contrib/toolchains_llvm/tree/master?tab=readme-ov-file#per-host-architecture-llvm-version).
+The LLVM_VERSIONS defines a default version (16) that applies to every system not defined otherwise (i.e. Linux) 
+and two custom versions, one (16.0.3) for Apple Silicon Macs (i.e. M1/M2/M3...) 
+and another one (15.0.7) for older Intel based Macs. 
+The reason for the differences in LLVM version numbers are two fold;
+for once the LLVM toolchain project stopped supporting Intel Macs a while ago, so 15.0.7
+is the last available version. Second, the LLVM version is not only depending on the target, 
+but also the build host. Many CI systems still run on older, but stable, Linux distros
+such as Ubuntu 18.04 or 20.04 and LLVM 15 and 16 are supporting these distros whereas newer LLVM versions
+have dropped support for older distros a while ago. 
+
+However, if your build and production system runs on a newer distro and does not need Apple support,
+then you can update to a more recent LLVM version, but the same rule applies that
+the LLVM version must support both, the host and the target. For a complete [list off all LLVM releases and supported platforms, see the official list.](https://github.com/bazel-contrib/toolchains_llvm/blob/master/toolchain/internal/llvm_distributions.bzl) It is possible to pin different targets to different LLVM
+versions, as shown above. [Please see the official documentation for details](https://github.com/bazel-contrib/toolchains_llvm/tree/master?tab=readme-ov-file#per-host-architecture-llvm-version).
 
 
 ### Rust Toolchain Configuration
@@ -224,10 +240,25 @@ the [Rust platform support documentation](https://doc.rust-lang.org/nightly/rust
 Next, you have to configure the target platform.
 
 
+### MUSL Toolchain Configuration
+
+The MUSL toolchain needs a target configuration that tells Bazel when to use MUSL. To do so, 
+please add the following to your MODULE.bazel.
+
+```Starlark
+# MUSL toolchain
+toolchains_musl = use_extension("@toolchains_musl//:toolchains_musl.bzl", "toolchains_musl", dev_dependency = True)
+toolchains_musl.config(
+    extra_target_compatible_with = ["@//build/linker:musl"],
+)
+```
+The target `build/linker/:musl` will be defined next. 
+
+
 ### Platform Configuration
 
-Before the MUSL platform can be configured, we need to add a custom linker configuration to redirect the linker to the
-MUSL linker. To do so, add an empty BUILD file in the following path:
+Before the MUSL platform can be configured, we need to add a custom linker configuration to redirect the linker to
+MUSL. To do so, add an empty BUILD file in the following path:
 
 `build/linker/BUILD.bazel`
 
