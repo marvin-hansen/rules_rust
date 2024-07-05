@@ -13,8 +13,7 @@ To build the example code:
 
 `bazel build //...`
 
-This may take a while on the first run because Bazel downloads
-multiple toolchains.
+This may take a while on the first run because Bazel downloads multiple toolchains.
 
 To apply compiler optimization and striping the binary:
 
@@ -54,7 +53,7 @@ The exact problem isn't C/C++ per se, it's the problem that, just one call in st
 
 ### 3) MUSL builds best with network only applications
 
-When building network only applications, then MUSL builds most of the time out of the box. However, the only remaining issue comes from DNS resolution. For historical reasons, the DNS resolution implementation in the standard library expects a HOST file with a default DNS server. Because it's a file, this doesnt work with MUSL. However, if you use a custom DNS resolver such as the excellent [Hickory DNS crate](https://github.com/hickory-dns/hickory-dns), you simply switch off the default features in the crate dependency and then construct the hickory resolver with a custom configuration containing the network DNS server. From there, a network only service usually compiles with MUSL. 
+When building network only applications, then MUSL builds most of the time out of the box. However, the only remaining issue comes from DNS resolution. For historical reasons, the DNS resolution implementation in the standard library expects a HOST file with a default DNS server. Because it's a file, this doesnt work with MUSL. However, if you use a custom DNS resolver such as the excellent [Hickory DNS crate](https://github.com/hickory-dns/hickory-dns), you simply switch off the default features in the crate dependency and then construct the hickory resolver with a custom configuration containing the network DNS server. From there, MUSL usually compiles your code. 
 
 
 ### 4) Test cross compiled MUSL Containers on CI or with Docker
@@ -692,13 +691,12 @@ load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_doc", "rust_doc_test")
 load("@rules_oci//oci:defs.bzl",  "oci_push")
 # Custom container macro
 load("//:build/container.bzl", "build_multi_arch_image", "build_sha265_tag")
-
 ```
 
 With these imports in place, you then use the rules as shown below:
 
 ```Starlark
-# Build binary
+# Build normal Rust binary
 rust_binary(
     name = "bin",
     # ...
@@ -709,8 +707,11 @@ build_multi_arch_image(
     name = "image_index",
     base = "@scratch",
     srcs = [":bin"],
-    exposed_ports = ["7070", "8080"],
-    platforms = [ "//build/platforms:linux_x86_64_musl",],
+    exposed_ports = ["3232"],
+    platforms = [
+        "//build/platforms:linux_x86_64_musl",
+        "//build/platforms:linux_arm64_musl",
+    ],
     visibility = ["//visibility:public"],
 )
 
@@ -736,10 +737,11 @@ oci_push(
 
 With the macro, building a multi-arch container is a three step process, build, tag, and push.
 As stated before, the macro only makes sense when you have either a larger number
-of very similar container builds or you have to enforce a number of (security) polices across the entire project.
+of very similar container to build or you have to enforce a number of (security) polices across the entire project.
 
 On the other hand, if you have to build very different or complex multi-layer containers,
-than the previous approach of defining each stage manually gives much more fine grained control at each stage of the container build process and is therefore the preferred process. 
+than the previous approach of defining each stage and container layer manually gives much more fine grained control
+and is therefore the preferred process. 
 
 Lastly, the custom macros for image tagging or building multi-arch containers  
 only serve as examples. In general, it is recommended to write custom macros only

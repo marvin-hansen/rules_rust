@@ -99,8 +99,11 @@ oci_image_index(
 #    name = "image_index",
 #    base = "@scratch",
 #    srcs = [":bin"],
-#    exposed_ports = ["7070", "8080"],
-#    platforms = [ "//build/platforms:linux_x86_64_musl",],
+#    exposed_ports = ["3232"],
+#    platforms = [
+#        "//build/platforms:linux_x86_64_musl",
+#        "//build/platforms:linux_arm64_musl",
+#    ],
 #    visibility = ["//visibility:public"],
 #)
 
