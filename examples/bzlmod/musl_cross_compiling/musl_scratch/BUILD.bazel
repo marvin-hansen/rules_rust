@@ -49,9 +49,8 @@ rust_binary(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        # Jemallocator Memory Allocator fixes a concurrency performance issue in MUSL
-        # https://www.linkedin.com/pulse/testing-alternative-c-memory-allocators-pt-2-musl-mystery-gomes
-        "@crates//:jemallocator",
+        # Custom Memory Allocator
+        "@crates//:mimalloc",
         # External crates
         "@crates//:arc-swap",
         "@crates//:serde",

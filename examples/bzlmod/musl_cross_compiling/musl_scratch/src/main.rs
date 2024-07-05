@@ -14,13 +14,13 @@ mod errors;
 mod handler;
 mod types;
 
-use jemallocator::Jemalloc;
+// https://github.com/purpleprotocol/mimalloc_rust
+use mimalloc::MiMalloc;
 
-// Jemalloc overwrites the default memory allocator.
 // This fixes a performance issue due to threat contention in the MUSL memory allocator.
 // https://www.linkedin.com/pulse/testing-alternative-c-memory-allocators-pt-2-musl-mystery-gomes
 #[global_allocator]
-static GLOBAL: Jemalloc = Jemalloc;
+static GLOBAL: MiMalloc = MiMalloc;
 
 const VRB: bool = true;
 const PORT: u16 = 3232;
