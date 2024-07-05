@@ -17,18 +17,18 @@ syntax = "proto3";
 // https://github.com/hyperium/tonic/blob/master/examples/proto/helloworld/helloworld.proto
 package proto;
 
-  // The greeting service definition.
-  service Greeter {
+// The greeting service definition.
+service Greeter {
     // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
 // The request message containing the user's name.
 message HelloRequest {
-  string name = 1;
+    string name = 1;
 }
 
 // The response message containing the greetings
 message HelloReply {
-  string message = 1;
+    string message = 1;
 }
