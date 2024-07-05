@@ -18,8 +18,8 @@ syntax = "proto3";
 package proto;
 
 // The greeting service definition.
-service Greeter {
-  // Sends a greeting
+  service Greeter {
+    // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
