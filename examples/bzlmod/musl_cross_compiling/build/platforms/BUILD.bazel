@@ -15,5 +15,21 @@ platform(
         "@//build/linker:musl",
         "@platforms//cpu:aarch64",
         "@platforms//os:linux",
+        ":musl_on",
     ],
+)
+
+constraint_value(
+    name = "musl_on",
+    constraint_setting = ":use_musl",
+)
+
+constraint_value(
+    name = "musl_off",
+    constraint_setting = ":use_musl",
+)
+
+constraint_setting(
+    name = "use_musl",
+    default_constraint_value = ":musl_off",
 )

@@ -153,7 +153,6 @@ register_toolchains("@rust_toolchains//:all")
 
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 
-#
 # https://hub.docker.com/r/hansenmarvin/rust-scratch/tags
 oci.pull(
     name = "scratch",

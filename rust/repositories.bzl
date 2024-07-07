@@ -1097,12 +1097,6 @@ def rust_repository_set(
         else:
             fail("extra_rustc_flags should be a list or a dict")
 
-        if toolchain.name == "rust_darwin_aarch64__x86_64-unknown-linux-musl__stable":
-            print('{}'.format(toolchain))
-
-        if toolchain.name == "rust_linux_x86_64__x86_64-unknown-linux-musl__stable":
-            print('{}'.format(toolchain))
-
         all_toolchain_names.append(rust_toolchain_repository(
             name = toolchain.name,
             allocator_library = allocator_library,
