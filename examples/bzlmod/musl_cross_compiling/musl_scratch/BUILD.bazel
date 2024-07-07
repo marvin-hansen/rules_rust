@@ -65,7 +65,7 @@ rust_binary(
 platform_transition_binary(
     name = "bin_linux_x86_64_musl",
     binary = ":bin",
-    target_platform = "//build/platforms:linux_x86_64_musl",
+    target_platform = "//build/platforms:x86_64-unknown-linux-musl",
 )
 
 # Test for x86_64 architecture
@@ -104,7 +104,7 @@ sh_test(
 platform_transition_binary(
     name = "bin_linux_arm64_musl",
     binary = ":bin",
-    target_platform = "//build/platforms:linux_arm64_musl",
+    target_platform = "//build/platforms:aarch64-unknown-linux-musl",
 )
 
 # Test for ARM architecture
@@ -161,8 +161,8 @@ multi_arch(
     name = "multi_arch_images",
     image = ":image",
     platforms = [
-        "//build/platforms:linux_x86_64_musl",
-        "//build/platforms:linux_arm64_musl",
+        "//build/platforms:x86_64-unknown-linux-musl",
+        "//build/platforms:aarch64-unknown-linux-musl",
     ],
 )
 
