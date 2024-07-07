@@ -1081,11 +1081,11 @@ def rust_repository_set(
     all_toolchain_names = []
     for toolchain in _get_toolchain_repositories(name, exec_triple, extra_target_triples_list, versions, iso_date):
         target_compatible_with = None
-        if type(extra_target_triples) == "dict":
-            target_compatible_with = extra_target_triples.get(toolchain.target_triple)
-        elif toolchain.target_triple == exec_triple:
+        if toolchain.target_triple == exec_triple:
             # The exec triple implicitly gets a toolchain with itself as a target - use default_target_compatible_with for it
             target_compatible_with = default_target_compatible_with
+        elif type(extra_target_triples) == "dict":
+            target_compatible_with = extra_target_triples.get(toolchain.target_triple)
 
         # Infer toolchain-specific rustc flags depending on the type (list, dict, optional) of extra_rustc_flags
         if extra_rustc_flags == None:

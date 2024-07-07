@@ -271,7 +271,7 @@ def abi_to_constraints(abi, *, arch = None, system = None):
     # add constraints for MUSL static compilation and linking
     # to separate the MUSL from the non-MUSL toolchain on x86_64
     # if abi == "musl" and system == "linux" and arch == "x86_64":
-        # all_abi_constraints.append("//rust/platform/constraints:musl_on")
+    # all_abi_constraints.append("//rust/platform/constraints:musl_on")
 
     # add constraints for iOS + watchOS simulator and device triples
     if system in ["ios", "watchos"]:
