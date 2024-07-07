@@ -47,9 +47,6 @@ SUPPORTED_T2_PLATFORM_TRIPLES = [
     "x86_64-linux-android",
     "x86_64-unknown-freebsd",
     "x86_64-unknown-none",
-    # MUSL
-    "x86_64-unknown-linux-musl",
-    "aarch64-unknown-linux-musl",
 ]
 
 SUPPORTED_T3_PLATFORM_TRIPLES = [
@@ -123,7 +120,6 @@ _SYSTEM_TO_BINARY_EXT = {
     "fuchsia": "",
     "ios": "",
     "linux": "",
-    "musl": "",
     "nixos": "",
     "none": "",
     "nto": "",
@@ -147,7 +143,6 @@ _SYSTEM_TO_STATICLIB_EXT = {
     "linux": ".a",
     "nixos": ".a",
     "none": ".a",
-    "musl": ".a",
     "nto": ".a",
     "unknown": "",
     "wasi": "",
@@ -165,7 +160,6 @@ _SYSTEM_TO_DYLIB_EXT = {
     "ios": ".dylib",
     "linux": ".so",
     "nixos": ".so",
-    "musl": ".so",
     "none": ".so",
     "nto": ".a",
     "unknown": ".wasm",
@@ -204,10 +198,9 @@ _SYSTEM_TO_STDLIB_LINKFLAGS = {
     "fuchsia": ["-lzircon", "-lfdio"],
     "illumos": ["-lsocket", "-lposix4", "-lpthread", "-lresolv", "-lnsl", "-lumem"],
     "ios": ["-lSystem", "-lobjc", "-Wl,-framework,Security", "-Wl,-framework,Foundation", "-lresolv"],
+    # TODO: This ignores musl. Longer term what does Bazel think about musl?
     "linux": ["-ldl", "-lpthread"],
     "nacl": [],
-    # TODO: This ignores musl. Longer term what does Bazel think about musl?
-    # "musl": [],
     "netbsd": ["-lpthread", "-lrt"],
     "nixos": ["-ldl", "-lpthread"],  # Same as `linux`.
     "none": [],

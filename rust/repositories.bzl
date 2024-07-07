@@ -962,11 +962,7 @@ rust_toolchain_set_repository = repository_rule(
 def _get_toolchain_repositories(name, exec_triple, extra_target_triples, versions, iso_date):
     toolchain_repos = []
 
-    target_triples = depset(extra_target_triples).to_list()
-    if not target_triples:
-         target_triples = [exec_triple]
-
-    for target_triple in depset(extra_target_triples).to_list():
+    for target_triple in depset([exec_triple] + extra_target_triples).to_list():
         # Parse all provided versions while checking for duplicates
         channels = {}
         for version in versions:
@@ -1100,6 +1096,12 @@ def rust_repository_set(
             toolchain_extra_rustc_flags = extra_rustc_flags.get(toolchain.target_triple)
         else:
             fail("extra_rustc_flags should be a list or a dict")
+
+        if toolchain.name == "rust_darwin_aarch64__x86_64-unknown-linux-musl__stable":
+            print('{}'.format(toolchain))
+
+        if toolchain.name == "rust_linux_x86_64__x86_64-unknown-linux-musl__stable":
+            print('{}'.format(toolchain))
 
         all_toolchain_names.append(rust_toolchain_repository(
             name = toolchain.name,
