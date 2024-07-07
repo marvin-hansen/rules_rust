@@ -132,7 +132,9 @@ rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
     edition = RUST_EDITION,
     extra_target_triples = [
-        "x86_64-unknown-linux-musl",
+        # MUSL on x86_64 doesn't work due to issue:
+        # https://github.com/bazelbuild/rules_rust/issues/2726
+        # "x86_64-unknown-linux-musl",
         "aarch64-unknown-linux-musl",
     ],
     versions = [RUST_VERSION],

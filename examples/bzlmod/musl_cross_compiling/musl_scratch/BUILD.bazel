@@ -17,7 +17,6 @@ filegroup(
     srcs = [
         ":bin",
         ":bin_linux_arm64_musl",
-        ":bin_linux_x86_64_musl",
     ],
     visibility = ["//visibility:public"],
 )
@@ -61,44 +60,13 @@ rust_binary(
     ],
 )
 
-# Build a MUSL x86_64 binary
-platform_transition_binary(
-    name = "bin_linux_x86_64_musl",
-    binary = ":bin",
-    target_platform = "//build/platforms:x86_64-unknown-linux-musl",
-)
-
-# Test for x86_64 architecture
-sh_test(
-    name = "test_musl_x86_64",
-    srcs = ["test_platform.sh"],
-    args = [
-        "$(rootpath :bin_linux_x86_64_musl)",
-        "x86_64",
-    ],
-    data = [
-        ":bin_linux_x86_64_musl",
-    ],
-    deps = [
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
-
-# Test for static compilation
-sh_test(
-    name = "test_musl_x86_64_static",
-    srcs = ["test_platform.sh"],
-    args = [
-        "$(rootpath :bin_linux_x86_64_musl)",
-        "static",
-    ],
-    data = [
-        ":bin_linux_x86_64_musl",
-    ],
-    deps = [
-        "@bazel_tools//tools/bash/runfiles",
-    ],
-)
+# MUSL on x86_64 doesn't work due to issue:
+# https://github.com/bazelbuild/rules_rust/issues/2726
+#platform_transition_binary(
+#    name = "bin_linux_x86_64_musl",
+#    binary = ":bin",
+#    target_platform = "//build/platforms:x86_64-unknown-linux-musl",
+#)
 
 # Build a MUSL ARM64 binary
 platform_transition_binary(
@@ -161,7 +129,7 @@ multi_arch(
     name = "multi_arch_images",
     image = ":image",
     platforms = [
-        "//build/platforms:x86_64-unknown-linux-musl",
+        # "//build/platforms:x86_64-unknown-linux-musl",
         "//build/platforms:aarch64-unknown-linux-musl",
     ],
 )
