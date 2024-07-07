@@ -7,8 +7,26 @@ module(
 # https://github.com/aspect-build/bazel-lib/releases
 bazel_dep(name = "aspect_bazel_lib", version = "2.5.0")
 
+# rules_rust up to version 0.46.0 have an issue
+# that causes incorrect compilation of MUSL targets
+# only when build on linux x86_64
+# See the following issues:
+# https://github.com/bazelbuild/rules_rust/issues/2726
+# https://github.com/bazelbuild/rules_rust/issues/2544
+#
+# Disabling release rules to use local rules instead
 # https://github.com/bazelbuild/rules_rust/releases
-bazel_dep(name = "rules_rust", version = "0.46.0")
+# bazel_dep(name = "rules_rust", version = "0.46.0")
+
+# Local override uses the rules from this repo instead of the registry
+bazel_dep(
+    name = "rules_rust",
+    version = "0.0.0",
+)
+local_path_override(
+    module_name = "rules_rust",
+    path = "../../..",
+)
 
 # Rules for OCI container images
 # https://github.com/bazel-contrib/rules_oci/releases
