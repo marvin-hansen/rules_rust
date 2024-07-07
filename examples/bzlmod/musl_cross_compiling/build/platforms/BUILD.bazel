@@ -6,6 +6,7 @@ platform(
         "@//build/linker:musl",
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
+        ":musl_on",
     ],
 )
 

@@ -47,9 +47,6 @@ SUPPORTED_T2_PLATFORM_TRIPLES = [
     "x86_64-linux-android",
     "x86_64-unknown-freebsd",
     "x86_64-unknown-none",
-    # MUSL
-    "x86_64-unknown-linux-musl",
-    "aarch64-unknown-linux-musl",
 ]
 
 SUPPORTED_T3_PLATFORM_TRIPLES = [

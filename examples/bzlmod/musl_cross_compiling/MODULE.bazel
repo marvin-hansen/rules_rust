@@ -16,17 +16,7 @@ bazel_dep(name = "aspect_bazel_lib", version = "2.5.0")
 #
 # Disabling release rules to use local rules instead
 # https://github.com/bazelbuild/rules_rust/releases
-# bazel_dep(name = "rules_rust", version = "0.46.0")
-
-# Local override uses the rules from this repo instead of the registry
-bazel_dep(
-    name = "rules_rust",
-    version = "0.0.0",
-)
-local_path_override(
-    module_name = "rules_rust",
-    path = "../../..",
-)
+bazel_dep(name = "rules_rust", version = "0.46.0")
 
 # Rules for OCI container images
 # https://github.com/bazel-contrib/rules_oci/releases
