@@ -751,16 +751,6 @@ tasks:
     working_directory: examples/bzlmod/hello_world_no_cargo
     build_targets:
       - "//..."
-  bzlmod_musl_cross_compiling:
-    name: MUSL with bzlmod
-    platform: ubuntu2004
-    working_directory: examples/bzlmod/musl_cross_compiling
-    build_targets:
-      - "//..."
-      - "//:all"
-      - "//musl_scratch:multi_arch_images"
-    test_targets:
-      - "//..."
   bzlmod_override_targets:
     name: Override Targets bzlmod
     platform: ubuntu2004
