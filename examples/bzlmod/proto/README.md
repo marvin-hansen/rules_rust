@@ -84,20 +84,38 @@ register_toolchains("@rules_rust//proto/protobuf:default-proto-toolchain")
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 
 # protobufs / gRPC
-crate.spec(package = "prost", version = "0.12")
-crate.spec(package = "prost-types", default_features = False, version = "0.12")
-crate.spec(package = "tonic", features = ["transport"], version = "0.11")
-crate.spec(package = "tonic-build", version = "0.11")
-crate.spec(package = "protoc-gen-prost", version = "0.3.1")
-crate.spec(package = "protoc-gen-tonic", version = "0.4.0")
-
+crate.spec(
+    package = "prost",
+    version = "0.12",
+)
+crate.spec(
+    default_features = False,
+    package = "prost-types",
+    version = "0.12",
+)
+crate.spec(
+    features = ["transport"],
+    package = "tonic",
+    version = "0.11",
+)
+crate.spec(
+    package = "tonic-build",
+    version = "0.11",
+)
+crate.spec(
+    package = "protoc-gen-prost",
+    version = "0.3.1",
+)
 crate.annotation(
     crate = "protoc-gen-prost",
     gen_binaries = ["protoc-gen-prost"],
 )
-
-crate.annotation(   
-    crate = "protoc-gen-tonic",   
+crate.spec(
+    package = "protoc-gen-tonic",
+    version = "0.4.0",
+)
+crate.annotation(
+    crate = "protoc-gen-tonic",
     gen_binaries = ["protoc-gen-tonic"],
 )
 
