@@ -58,7 +58,7 @@ When building network only applications, then MUSL builds most of the time out o
 
 ### 4) Test cross compiled MUSL Containers on CI or with Docker
 
-There is non-zero chance of a segfault for any number of reasons. It's rare, but Tte compiler cannot catch those corner cases so the best you can do is to pull the actual image, and start it either locally or on your CI and run some basic integration tests. Integration tests are generally considered best practice, 
+There is non-zero chance of a segfault for any number of reasons. It's rare, but the compiler cannot catch those corner cases so the best you can do is to pull the actual image, and start it either locally or on your CI and run some basic integration tests. Integration tests are generally considered best practice, 
 but in case of MUSL binaries, you really have to double check if the container starts correctly. The section
 about configuring a [custom memory allocator](#custom-memory-allocator) elaborates when and how to avoid the segfault pitfall. 
 
