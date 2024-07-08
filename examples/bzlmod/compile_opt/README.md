@@ -1,6 +1,6 @@
 # Hello World with compiler optimization
 
-By default, rules_rust you can define compiler option for each binary target. 
+Each binary target can have its own compiler options, and these can be customised differently for different optimisation levels.
 This takes three steps:
 
 1) In your root folder BUILD.bazel, add the following entry:
