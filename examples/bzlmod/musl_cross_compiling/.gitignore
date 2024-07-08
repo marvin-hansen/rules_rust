@@ -1,5 +1,0 @@
-/bazel-*
-.DS_Store
-build/.DS_Store
-musl_scratch/.DS_Store
-*/.DS_Store
