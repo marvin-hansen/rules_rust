@@ -298,10 +298,6 @@ and add the following content:
 load("//basic/3rdparty/crates:defs.bzl", basic_crate_repositories = "crate_repositories")
 
 def sys_deps():
-    """
-    This macro loads dependencies for the `basic` crate examples
-    """
-
     # Load the vendored dependencies
     basic_crate_repositories()
 ```
@@ -310,7 +306,8 @@ This is straightforward, you import the generated crate_repositories from the cr
 rename it to avoid name clashes in case you import from multiple vendored folders, and then
 just load the vendored dependencies.
 
-In a WORKSPACE configuration, you would just load and call sys_deps(), but in a MODULE configuration, you cannot do that. Instead, you create a new file `WORKSPACE.bzlmod` and add the following content.
+In a WORKSPACE configuration, you would just load and call sys_deps(),
+but in a MODULE configuration, you cannot do that. Instead, you create a new file `WORKSPACE.bzlmod` and add the following content.
 
 ```starlark
 load("//:sys_deps.bzl", "sys_deps")
